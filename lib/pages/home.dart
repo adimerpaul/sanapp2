@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 // import '../screens/detail_screen.dart';
@@ -93,171 +94,33 @@ class MainHomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                    height: 180,
-                    width: 400,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/main.png',
-                          )),
-                    )
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 0.0),
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         height: 130,
-                //         width: 390,
-                //         color: Colors.white,
-                //         child: Padding(
-                //           padding: const EdgeInsets.only(right:8.0),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               Padding(
-                //                 padding: const EdgeInsets.only(left: 10.0),
-                //                 child: Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                       height:53,
-                //                       width: 53,
-                //                       decoration: BoxDecoration(
-                //                           color: const Color(0xffF6F6F6),
-                //                           borderRadius: BorderRadius.circular(10)
-                //                       ),
-                //                       child: Container(
-                //                           child: const Icon(Icons.grid_view_outlined,size: 32,)
-                //                       ),
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 14,
-                //                     ),
-                //                     const Text('Category',style: TextStyle(
-                //                         fontSize: 17
-                //                     ),)
-                //                   ],
-                //
-                //                 ),
-                //               ),
-                //               Padding(
-                //                 padding: const EdgeInsets.only(left: 15.0),
-                //                 child: Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                       height:53,
-                //                       width: 53,
-                //                       decoration: BoxDecoration(
-                //                           color: const Color(0xffF6F6F6),
-                //                           borderRadius: BorderRadius.circular(10)
-                //                       ),
-                //                       child: const Icon(Icons.flight,size: 32,),
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 14,
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 6,
-                //                     ),
-                //                     const Text('Flight'),
-                //                   ],
-                //
-                //                 ),
-                //               ),
-                //               Padding(
-                //                 padding: const EdgeInsets.only(left: 18.0),
-                //                 child: Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                       height:53,
-                //                       width: 53,
-                //                       decoration: BoxDecoration(
-                //                           color: const Color(0xffF6F6F6),
-                //                           borderRadius: BorderRadius.circular(10)
-                //                       ),
-                //                       child: Container(
-                //                           child: const Icon(Icons.receipt_long,size: 32,)
-                //                       ),
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 14,
-                //                     ),
-                //                     const Text('bill',style: TextStyle(
-                //                         fontSize: 17
-                //                     ),),
-                //                   ],
-                //
-                //                 ),
-                //               ),
-                //               Padding(
-                //                 padding: const EdgeInsets.only(left: 18.0),
-                //                 child: Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                       height:53,
-                //                       width: 53,
-                //                       decoration: BoxDecoration(
-                //                           color: const Color(0xffF6F6F6),
-                //                           borderRadius: BorderRadius.circular(10)
-                //                       ),
-                //                       child: Container(
-                //                           child: const Icon(Icons.data_exploration_outlined,size: 32,)
-                //                       ),
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 14,
-                //                     ),
-                //                     const Text('Data Plan',style: TextStyle(
-                //                         fontSize: 17
-                //                     ),),
-                //                   ],
-                //
-                //                 ),
-                //               ),
-                //               Padding(
-                //                 padding: const EdgeInsets.only(left: 18.0),
-                //                 child: Column(
-                //                   mainAxisAlignment: MainAxisAlignment.center,
-                //                   crossAxisAlignment: CrossAxisAlignment.center,
-                //                   children: [
-                //                     Container(
-                //                       height:53,
-                //                       width: 53,
-                //                       decoration: BoxDecoration(
-                //                           color: const Color(0xffF6F6F6),
-                //                           borderRadius: BorderRadius.circular(10)
-                //                       ),
-                //                       child: Container(
-                //                           child: const Icon(Icons.upcoming_outlined,size: 32,)
-                //                       ),
-                //                     ),
-                //                     const SizedBox(
-                //                       height: 14,
-                //                     ),
-                //                     const Text('TopUp',style: TextStyle(
-                //                         fontSize: 17
-                //                     ),),
-                //                   ],
-                //
-                //                 ),
-                //               )
-                //             ],
-                //           ),
-                //         ),
-                //
-                //       ),
-                //     ],
-                //   ),
+                // Container(
+                //     height: 180,
+                //     width: 400,
+                //     decoration: const BoxDecoration(
+                //       image: DecorationImage(
+                //           image: AssetImage(
+                //             'assets/images/main.png',
+                //           )),
+                //     )
                 // ),
+                CarouselSlider(
+                  options: CarouselOptions(height: 180.0),
+                  items: [1,2,3,4,5].map((i) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                                color: Colors.amber
+                            ),
+                            // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
