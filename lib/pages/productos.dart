@@ -40,8 +40,8 @@ class _ProductosState extends State<Productos> {
     });
     try {
       var products = await ApiService().getProducts(searchQuery);
-      print(jsonEncode(products));
-      print('searchQuery: $searchQuery');
+      // print(jsonEncode(products));
+      // print('searchQuery: $searchQuery');
       productList.clear();
       var url = dotenv.env['API_BACK'];
       for (var product in products) {
