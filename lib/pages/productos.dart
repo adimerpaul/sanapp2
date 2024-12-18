@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../services/apiService.dart';
 
@@ -11,15 +12,20 @@ class Productos extends StatefulWidget {
 }
 
 class _ProductosState extends State<Productos> {
+  final List<String> imgList = [];
   @override
   void initState() {
     super.initState();
     getCarouselsPage();
   }
-  getCarouselsPage() {
-    var carousels = ApiService().getCarouselsPage();
-    print(carousels);
-    print('carousels');
+  getCarouselsPage() async {
+    var carousels = await ApiService().getCarouselsPage();
+    var url = dotenv.env['API_BACK'];
+    imgList.clear();
+    for (var carousel in carousels) {
+      imgList.add('$url/../images/${carousel['image']}');
+    }
+    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
@@ -80,21 +86,26 @@ class _ProductosState extends State<Productos> {
             //     )
             // ),
             CarouselSlider(
-              options: CarouselOptions(height: 180.0),
-              items: [1,2,3,4,5].map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                          color: Colors.amber
-                      ),
-                      // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                    );
-                  },
-                );
-              }).toList(),
+              options: CarouselOptions(height: 90.0,autoPlay: true),
+              // items: [1,2,3,4,5].map((i) {
+              //   return Builder(
+              //     builder: (BuildContext context) {
+              //       return Container(
+              //         width: MediaQuery.of(context).size.width,
+              //         margin: EdgeInsets.symmetric(horizontal: 5.0),
+              //         decoration: BoxDecoration(
+              //             color: Colors.amber
+              //         ),
+              //         // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+              //       );
+              //     },
+              //   );
+              // }).toList(),
+              items: imgList.map((item) => Container(
+                child: Center(
+                    child: Image.network(item, fit: BoxFit.cover, width: 1000)
+                ),
+              )).toList(),
             ),
             const SizedBox(
               height: 20,
