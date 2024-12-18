@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:san2/pages/home.dart';
 
-void main() {
+Future<void> main() async {
+  const prod = bool.fromEnvironment('dart.vm.product');
+  await dotenv.load(fileName: prod ? '.env.production' : '.env');
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
