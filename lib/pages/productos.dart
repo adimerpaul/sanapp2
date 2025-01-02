@@ -46,12 +46,19 @@ class _ProductosState extends State<Productos> {
       productList.clear();
       var url = dotenv.env['API_BACK'];
       for (var product in products) {
+        if (product['porcentaje'] > 0) {
+          product['es_porcentaje'] = true;
+          product['precioNormal'] = product['precio'];
+          var precio = product['precio'] - (product['precio'] * product['porcentaje'] / 100);
+          product['precio'] = precio.toStringAsFixed(2);
+        }
         productList.add({
           'id': product['id'],
           'name': product['nombre'],
           'description': product['descripcion'],
-          'price': product['precio'],
+          'precio': product['precio'],
           'image': '$url/../images/${product['imagen']}',
+          'precioNormal': product['precioNormal'],
         });
       }
       setState(() {});
@@ -223,14 +230,36 @@ class _ProductosState extends State<Productos> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 5),
-                                Text(
-                                  '\Bs${product['price']}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff2A977D),
-                                    fontSize: 14,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '\Bs${product['precioNormal']}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff2A977D),
+                                        fontSize: 14,
+                                      decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      '\Bs${product['precio']}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                // Text(
+                                //   '\Bs${product['price']}',
+                                //   style: const TextStyle(
+                                //     fontWeight: FontWeight.bold,
+                                //     color: Colors.red,
+                                //     fontSize: 14,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

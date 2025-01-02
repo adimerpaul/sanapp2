@@ -30,6 +30,12 @@ class _DetailPageState extends State<DetailPage> {
   Future<void> fetchProductDetails(int id) async {
     try {
       var product = await ApiService().productosId(id);
+      if (product['porcentaje'] > 0) {
+        product['es_porcentaje'] = true;
+        product['precioNormal'] = product['precio'];
+        var precio = product['precio'] - (product['precio'] * product['porcentaje'] / 100);
+        product['precio'] = precio.toStringAsFixed(2);
+      }
       setState(() {
         productDetails = product;
       });
@@ -239,14 +245,28 @@ class _DetailPageState extends State<DetailPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Total Price'),
-                      Text(
-                        'Bs${productDetails!['precio']}',
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff2A977D),
-                        ),
+                      const Text('Total Precio'),
+                      Row(
+                        children: [
+                          Text(
+                            'Bs${productDetails!['precioNormal']}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff2A977D),
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Bs${productDetails!['precio']}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -300,7 +320,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           child: const Center(
                             child: Text(
-                              'Comprar Ahora',
+                              'Comprar ',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17,
