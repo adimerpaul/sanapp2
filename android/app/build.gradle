@@ -20,21 +20,30 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.san2"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // Especifica tu Application ID único
+        applicationId = "com.adimer.san2"
+        // Configuración de SDK
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = 1 // Incrementa este número para nuevas versiones
+        versionName = "1.0" // Nombre de la versión
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'key'
+            keyPassword '123456' // Cambia esto por tu contraseña de clave
+            storeFile file('key.jks') // Asegúrate de que el archivo key.jks esté en android/app/
+            storePassword '123456' // Cambia esto por tu contraseña de almacén
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.release // Cambiar a "release" en lugar de "debug"
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
