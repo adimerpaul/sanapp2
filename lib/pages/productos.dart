@@ -14,6 +14,7 @@ class Productos extends StatefulWidget {
 
 class _ProductosState extends State<Productos> {
   final List<String> imgList = [];
+  final List<String> imgListMini = [];
   final List<dynamic> productList = [];
   final TextEditingController searchController = TextEditingController();
   bool isLoading = false;
@@ -27,7 +28,13 @@ class _ProductosState extends State<Productos> {
 
   Future<void> getCarouselsPage() async {
     var carousels = await ApiService().getCarouselsPage();
+    var carouselsMini = await ApiService().getCarouselsMini();
     var url = dotenv.env['API_BACK'];
+    imgListMini.clear();
+    for (var carousel in carouselsMini) {
+      // print(carousel);
+      imgListMini.add('$url/../images/${carousel['image']}');
+    }
     imgList.clear();
     for (var carousel in carousels) {
       imgList.add('$url/../images/${carousel['image']}');
@@ -119,7 +126,29 @@ class _ProductosState extends State<Productos> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            CarouselSlider(
+              options: CarouselOptions(height: 50.0, autoPlay: true,
+                viewportFraction: 0.3,
+                aspectRatio: 2.0,
+              ),
+              items: imgListMini
+                  .map(
+                    (item) => Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      item,
+                      fit: BoxFit.cover,
+                      width: 100, // Ajustar el ancho según el diseño
+                    ),
+                  ),
+                ),
+              )
+                  .toList(),
+            ),
+            const SizedBox(height: 10),
             CarouselSlider(
               options: CarouselOptions(height: 90.0, autoPlay: true),
               items: imgList

@@ -14,6 +14,14 @@ class ApiService {
       throw Exception('Failed to load carouselsPage');
     }
   }
+  Future getCarouselsMini() async {
+    final response = await http.get(Uri.parse('$baseUrl/carouselsMini'));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load carouselsMini');
+    }
+  }
   Future getProducts(String searchQuery) async {
     final response = await http.get(
       Uri.parse('${dotenv.env['API_BACK']}/productos?search=$searchQuery'),
