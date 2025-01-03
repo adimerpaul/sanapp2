@@ -93,12 +93,19 @@ class _DetailPageState extends State<DetailPage> {
                           },
                         ),
                         const SizedBox(width: 13),
-                        const Icon(Icons.share, size: 30),
-                        const SizedBox(width: 13),
-                        const Badge(
-                          label: Text('1'),
-                          child: Icon(Icons.shopping_bag_outlined, size: 30),
+                        // const Icon(Icons.share, size: 30),
+                        IconButton(
+                            onPressed: () {
+                              var url = 'https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+${productDetails!['nombre']}+a+Bs.${productDetails!['precio']}+c%2Fu.+Total+Bs.${productDetails!['precio']}';
+                              launchUrl(url);
+                            },
+                            icon: const Icon(Icons.share, size: 30)
                         ),
+                        const SizedBox(width: 13),
+                        // const Badge(
+                        //   label: Text('1'),
+                        //   child: Icon(Icons.shopping_bag_outlined, size: 30),
+                        // ),
                       ],
                     ),
                   ],
@@ -282,22 +289,29 @@ class _DetailPageState extends State<DetailPage> {
                             topLeft: Radius.circular(7),
                           ),
                         ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Icon(Icons.shopping_basket_outlined, color: Colors.white),
-                                Text(
-                                  '1',
-                                  style: TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            // https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+ARTINEO+B+X+CAPSULA+a+Bs.+13.14+c%2Fu.+Total+Bs.+13.14&type=phone_number&app_absent=0
+                            var url = 'https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+${productDetails!['nombre']}+a+Bs.${productDetails!['precio']}+c%2Fu.+Total+Bs.${productDetails!['precio']}';
+                            launchUrl(url);
+                          },
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Icon(Icons.shopping_basket_outlined, color: Colors.white),
+                                  Text(
+                                    '1',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),

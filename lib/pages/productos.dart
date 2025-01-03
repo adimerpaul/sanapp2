@@ -115,14 +115,14 @@ class _ProductosState extends State<Productos> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Badge(
-                    label: Text('1'),
-                    child: Image(
-                      height: 30,
-                      width: 30,
-                      image: AssetImage('assets/icons/img.png'),
-                    ),
-                  ),
+                  // const Badge(
+                  //   label: Text('1'),
+                  //   child: Image(
+                  //     height: 30,
+                  //     width: 30,
+                  //     image: AssetImage('assets/icons/img.png'),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -173,14 +173,14 @@ class _ProductosState extends State<Productos> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    'Ver más',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff2A977D),
-                    ),
-                  ),
+                  // Text(
+                  //   'Ver más',
+                  //   style: TextStyle(
+                  //     fontSize: 17,
+                  //     fontWeight: FontWeight.bold,
+                  //     color: Color(0xff2A977D),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
