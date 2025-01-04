@@ -111,7 +111,7 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 15),
+              // const SizedBox(height: 15),
               Image.network(
                 '$url/../images/${productDetails!['imagen']}',
                 height: 350,
@@ -196,16 +196,16 @@ class _DetailPageState extends State<DetailPage> {
                 ],
               ),
               const Divider(color: Colors.black),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         const Text(
-                          'Brand:',
+                          'Marca:',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -222,30 +222,30 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Color:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        const SizedBox(width: 7),
-                        Text(
-                          'N/A', // Puedes reemplazar con un campo relevante si existe
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     const Text(
+                    //       'Color:',
+                    //       style: TextStyle(
+                    //         fontWeight: FontWeight.bold,
+                    //         color: Colors.grey,
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 7),
+                    //     Text(
+                    //       'N/A', // Puedes reemplazar con un campo relevante si existe
+                    //       style: const TextStyle(
+                    //         fontWeight: FontWeight.bold,
+                    //         fontSize: 16,
+                    //         color: Colors.black,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -25,7 +25,7 @@ android {
         // Configuración de SDK
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = 3 // Incrementa este número para nuevas versiones
+        versionCode = 4 // Incrementa este número para nuevas versiones
         versionName = "1.0" // Nombre de la versión
     }
 
