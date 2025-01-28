@@ -20,11 +20,29 @@ class _DetailPageState extends State<DetailPage> {
   bool favoriteClick = false;
   String? url = dotenv.env['API_BACK'];
   Map? productDetails;
+  List? agencias;
 
   @override
   void initState() {
     super.initState();
     fetchProductDetails(widget.product['id']);
+    getAgencias();
+  }
+
+  Future<void> getAgencias() async {
+    try {
+      var agencias = await ApiService().getSucursales();
+      setState(() {
+        this.agencias = agencias;
+      });
+      // for (var agencia in agencias) {
+      //   print("Agencia: $agencia");
+      // }
+    } catch (error) {
+      print("Error fetching agencias: $error");
+    } finally {
+      setState(() {});
+    }
   }
 
   Future<void> fetchProductDetails(int id) async {
@@ -171,6 +189,42 @@ class _DetailPageState extends State<DetailPage> {
                       color: Color(0xff2A977D),
                     ),
                   ),
+                  // {
+                  //   id: 32,
+                  //   nombre: "ARTEZINE 20 MG X COMPRIMIDO",
+                  //   barra: null,
+                  //   cantidad: 110,
+                  //   cantidadAlmacen: 0,
+                  //   cantidadSucursal1: 38,
+                  //   cantidadSucursal2: 16,
+                  //   cantidadSucursal3: 8,
+                  //   cantidadSucursal4: 13,
+                  //   costo: 27.69,
+                  //   precioAntes: null,
+                  //   precio: 36,
+                  //   porcentaje: 8,
+                  //   activo: "ACTIVO",
+                  //   unidad: "TABLETAS",
+                  //   registroSanitario: "NN - 45450/2022",
+                  //   paisOrigen: "BOLIVIA",
+                  //   nombreComun: "Leflunomida 20 mg",
+                  //   composicion: "Leflunomida 20 mg",
+                  //   marca: "BRESCOT PHARMA",
+                  //   distribuidora: "DISTRIBUIDORA COFAR S.A.",
+                  //   imagen: "1704826657ARTEZINE20_E.png",
+                  //   descripcion: "Inmunomodulador, antirreumático",
+                  //   category_id: 3,
+                  //   agencia_id: 1,
+                  //   created_at: "2024-01-09T15:04:17.000000Z",
+                  //   updated_at: "2025-01-24T18:49:08.000000Z",
+                  //   subcategory_id: 3,
+                  //   cantidadSucursal5: 0,
+                  //   cantidadSucursal6: 14,
+                  //   cantidadSucursal7: 21,
+                  //   cantidadSucursal8: 0,
+                  //   cantidadSucursal9: 0,
+                  //   cantidadSucursal10: 0
+                  // }
                   SizedBox(width: 20),
                   // Text(
                   //   'Reviews',
@@ -347,6 +401,24 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ],
               ),
+              // Text('a Bs.${productDetails!['precio']} c/u', style: const TextStyle(color: Colors.grey)),
+              // mostrar lancantidad des an cada sucursal
+              Text('Sucursales disponibles', style: const TextStyle(color: Colors.black)),
+              const SizedBox(height: 10),
+              for (var agencia in agencias!)
+                if (productDetails!['cantidadSucursal${agencia['id']}'] != null && productDetails!['cantidadSucursal${agencia['id']}'] > 0)
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(agencia['nombre'], style: const TextStyle(color: Colors.black)),
+                        Text( productDetails!['cantidadSucursal${agencia['id']}'] == null ? '0' : productDetails!['cantidadSucursal${agencia['id']}'].toString(), style: const TextStyle(color: Colors.black)),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
             ],
                     ),
                   ),
