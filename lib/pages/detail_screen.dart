@@ -28,6 +28,11 @@ class _DetailPageState extends State<DetailPage> {
     fetchProductDetails(widget.product['id']);
     getAgencias();
   }
+  String Textlower(String text) {
+    var texto = text.toLowerCase();
+    var first = texto[0].toUpperCase();
+    return first + texto.substring(1);
+  }
 
   Future<void> getAgencias() async {
     try {
@@ -54,6 +59,7 @@ class _DetailPageState extends State<DetailPage> {
         var precio = product['precio'] - (product['precio'] * product['porcentaje'] / 100);
         product['precio'] = precio.toStringAsFixed(2);
       }
+      print("Product details: $product");
       setState(() {
         productDetails = product;
       });
@@ -81,12 +87,12 @@ class _DetailPageState extends State<DetailPage> {
       )
           : SingleChildScrollView(
             child: Padding(
-                    padding: const EdgeInsets.only(left: 18.0, right: 18),
+                    padding: const EdgeInsets.only(left: 10.0, right: 10),
                     child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 60.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -130,11 +136,13 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
               // const SizedBox(height: 15),
-              Image.network(
-                '$url/../images/${productDetails!['imagen']}',
-                height: 350,
-                width: 350,
-                fit: BoxFit.cover,
+              Center(
+                child: Image.network(
+                  '$url/../images/${productDetails!['imagen']}',
+                  height: 250,
+                  width: 250,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -145,7 +153,7 @@ class _DetailPageState extends State<DetailPage> {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 10),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //   children: const [
@@ -182,7 +190,7 @@ class _DetailPageState extends State<DetailPage> {
               Row(
                 children: const [
                   Text(
-                    'Description',
+                    'Descripcion',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -226,14 +234,6 @@ class _DetailPageState extends State<DetailPage> {
                   //   cantidadSucursal10: 0
                   // }
                   SizedBox(width: 20),
-                  // Text(
-                  //   'Reviews',
-                  //   style: TextStyle(
-                  //     fontSize: 20,
-                  //     color: Colors.grey,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                 ],
               ),
               Row(
@@ -249,53 +249,30 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ],
               ),
-              const Divider(color: Colors.black),
+              // const Divider(color: Colors.black),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        const Text(
-                          'Marca:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
+                    _buildDetailRow('Marca:', productDetails!['marca'] ?? 'N/A'),
+                    _buildDetailRow('Registro Sanitario:', productDetails!['registroSanitario'] ?? 'N/A'),
+                    _buildDetailRow('Unidada:', productDetails!['unidad'] ?? 'N/A'),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width + 500,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            _buildDetailRow('Principio activo:', productDetails!['composicion'] ?? 'N/A'),
+                          ],
                         ),
-                        const SizedBox(width: 7),
-                        Text(
-                          productDetails!['marca'] ?? 'N/A',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    // Row(
-                    //   children: [
-                    //     const Text(
-                    //       'Color:',
-                    //       style: TextStyle(
-                    //         fontWeight: FontWeight.bold,
-                    //         color: Colors.grey,
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 7),
-                    //     Text(
-                    //       'N/A', // Puedes reemplazar con un campo relevante si existe
-                    //       style: const TextStyle(
-                    //         fontWeight: FontWeight.bold,
-                    //         fontSize: 16,
-                    //         color: Colors.black,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    _buildDetailRow('Pais de origen:', productDetails!['paisOrigen'] ?? 'N/A'),
+                    _buildDetailRow('Cantidad:', productDetails!['cantidad'] > 100 ? '100+' : productDetails!['cantidad'].toString()),
                   ],
                 ),
               ),
@@ -403,20 +380,53 @@ class _DetailPageState extends State<DetailPage> {
               ),
               // Text('a Bs.${productDetails!['precio']} c/u', style: const TextStyle(color: Colors.grey)),
               // mostrar lancantidad des an cada sucursal
-              Text('Sucursales disponibles', style: const TextStyle(color: Colors.black)),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
+              Text('Sucursales disponibles', style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 0),
               for (var agencia in agencias!)
                 if (productDetails!['cantidadSucursal${agencia['id']}'] != null && productDetails!['cantidadSucursal${agencia['id']}'] > 0)
                 Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(agencia['nombre'], style: const TextStyle(color: Colors.black)),
-                        Text( productDetails!['cantidadSucursal${agencia['id']}'] == null ? '0' : productDetails!['cantidadSucursal${agencia['id']}'].toString(), style: const TextStyle(color: Colors.black)),
-                      ],
+                    // Row(
+                    //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(agencia['nombre'], style: const TextStyle(color: Colors.black)),
+                    //     // Text(productDetails!['cantidadSucursal${agencia['id']}'] == null ? '0' : productDetails!['cantidadSucursal${agencia['id']}'].toString(), style: const TextStyle(color: Colors.black)),
+                    //     GestureDetector(
+                    //       onTap: () {
+                    //         var latitud = agencia['latitud'];
+                    //         var longitud = agencia['longitud'];
+                    //         var url = 'https://www.google.com/maps/search/?api=1&query=$latitud,$longitud';
+                    //         launchUrl(url);
+                    //       },
+                    //       // icon dense
+                    //       child: Badge(
+                    //         label: Text('Disponible', style: const TextStyle(color: Colors.white)),
+                    //         child: const Icon(Icons.location_on, color: Colors.black),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    ListTile(
+                      title: Text(Textlower(agencia['nombre']), style: const TextStyle(color: Colors.black)),
+                      // subtitle: Text('Cantidad: ${productDetails!['cantidadSucursal${agencia['id']}']}', style: const TextStyle(color: Colors.black)),
+                      trailing: ElevatedButton.icon(
+                        onPressed: () {
+                          var latitud = agencia['latitud'];
+                          var longitud = agencia['longitud'];
+                          var url = 'https://www.google.com/maps/search/?api=1&query=$latitud,$longitud';
+                          launchUrl(url);
+                        },
+                        icon: const Icon(Icons.location_on, color: Colors.white,size: 12),
+                        label: const Text('Ver ubicacion', style: TextStyle(color: Colors.white, fontSize: 12)),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                          minimumSize: MaterialStateProperty.all<Size>(const Size(60, 25)),
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 8)),
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 10),
+                    // const SizedBox(height: 10),
                   ],
                 ),
             ],
@@ -425,4 +435,26 @@ class _DetailPageState extends State<DetailPage> {
           ),
     );
   }
+}
+Widget _buildDetailRow(String label, String value) {
+  return Row(
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.grey,
+        ),
+      ),
+      const SizedBox(width: 7),
+      Text(
+        value,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.black,
+        ),
+      ),
+    ],
+  );
 }
