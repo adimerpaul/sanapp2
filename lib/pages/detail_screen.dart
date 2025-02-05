@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:san2/addons/snackbarHelper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../globals.dart' as globals;
 
 import '../services/apiService.dart';
 
@@ -126,10 +128,11 @@ class _DetailPageState extends State<DetailPage> {
                             icon: const Icon(Icons.share, size: 30)
                         ),
                         const SizedBox(width: 13),
-                        // const Badge(
-                        //   label: Text('1'),
-                        //   child: Icon(Icons.shopping_bag_outlined, size: 30),
-                        // ),
+                        Badge(
+                          label: Text( globals.carritoCompras.length.toString(), style: const TextStyle(color: Colors.white)),
+                          child: Icon(Icons.shopping_bag_outlined, size: 30),
+                        ),
+                        const SizedBox(width: 24),
                       ],
                     ),
                   ],
@@ -323,8 +326,12 @@ class _DetailPageState extends State<DetailPage> {
                         child: GestureDetector(
                           onTap: () {
                             // https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+ARTINEO+B+X+CAPSULA+a+Bs.+13.14+c%2Fu.+Total+Bs.+13.14&type=phone_number&app_absent=0
-                            var url = 'https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+${productDetails!['nombre']}+a+Bs.${productDetails!['precio']}+c%2Fu.+Total+Bs.${productDetails!['precio']}';
-                            launchUrl(url);
+                            // var url = 'https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+${productDetails!['nombre']}+a+Bs.${productDetails!['precio']}+c%2Fu.+Total+Bs.${productDetails!['precio']}';
+                            // launchUrl(url);
+                            // agregar a carritoCompras
+                            globals.carritoCompras.add(productDetails);
+                            setState(() {});
+                            successSnackBar(context, 'Producto agregado al carrito de compras');
                           },
                           child: Center(
                             child: Padding(

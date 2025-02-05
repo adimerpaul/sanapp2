@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../services/apiService.dart';
 import 'detail_screen.dart';
+import '../globals.dart' as globals;
 
 class Productos extends StatefulWidget {
   const Productos({super.key});
@@ -115,14 +116,14 @@ class _ProductosState extends State<Productos> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  // const Badge(
-                  //   label: Text('1'),
-                  //   child: Image(
-                  //     height: 30,
-                  //     width: 30,
-                  //     image: AssetImage('assets/icons/img.png'),
-                  //   ),
-                  // ),
+                  Badge(
+                    label: Text(globals.carritoCompras.length.toString()),
+                    child: Image(
+                      height: 30,
+                      width: 30,
+                      image: AssetImage('assets/icons/img.png'),
+                    ),
+                  ),
                 ],
               ),
             ),
