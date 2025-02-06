@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:san2/pages/carrito.dart';
 import '../services/apiService.dart';
 import 'detail_screen.dart';
 import '../globals.dart' as globals;
@@ -116,12 +117,22 @@ class _ProductosState extends State<Productos> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Badge(
-                    label: Text(globals.carritoCompras.length.toString()),
-                    child: Image(
-                      height: 30,
-                      width: 30,
-                      image: AssetImage('assets/icons/img.png'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CarritoPage()
+                        ),
+                      );
+                    },
+                    child: Badge(
+                      label: Text(globals.carritoCompras.length.toString()),
+                      child: Image(
+                        height: 30,
+                        width: 30,
+                        image: AssetImage('assets/icons/img.png'),
+                      ),
                     ),
                   ),
                 ],
