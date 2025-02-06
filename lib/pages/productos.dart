@@ -118,13 +118,14 @@ class _ProductosState extends State<Productos> {
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const CarritoPage()
                         ),
                       );
+                      setState(() {});
                     },
                     child: Badge(
                       label: Text(globals.carritoCompras.length.toString()),
@@ -215,8 +216,8 @@ class _ProductosState extends State<Productos> {
                 itemBuilder: (context, index) {
                   final product = productList[index];
                   return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailPage(
@@ -224,6 +225,7 @@ class _ProductosState extends State<Productos> {
                           ),
                         ),
                       );
+                      setState(() {});
                     },
                     child: Container(
                       decoration: BoxDecoration(

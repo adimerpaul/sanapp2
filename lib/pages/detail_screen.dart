@@ -24,6 +24,7 @@ class _DetailPageState extends State<DetailPage> {
   String? url = dotenv.env['API_BACK'];
   Map? productDetails;
   List? agencias;
+  TextEditingController quantityController = TextEditingController();
 
   @override
   void initState() {
@@ -41,107 +42,6 @@ class _DetailPageState extends State<DetailPage> {
     try {
       // var agencias = await ApiService().getSucursales();
       setState(() {
-        // this.agencias = agencias;
-        // [
-        //   {
-        //     id: 1,
-        //     nombre: "CASA MATRIZ - VELASCO",
-        //     direccion: "Velazco Galvarro Nº 2246 entre Santa Barbara y Arce",
-        //     telefono: "52 10798",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "8:00 am a 11:00 pm",
-        //     facebook: "https://www.facebook.com/farmacia.santidaddivina",
-        //     whatsapp: "https://walink.co/224178",
-        //     gps: "https://maps.app.goo.gl/nRQk8aTPoAC2eLVM9",
-        //     latitud: "-17.9771278",
-        //     longitud: "-67.1116408",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 2,
-        //     nombre: "SANTIDAD DIVINA I (EX TERMINAL)",
-        //     direccion: "Rodriguez Nº 15 entre Brasil y Tejerina",
-        //     telefono: "52 82487",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "8:00 am a 10:00 pm",
-        //     facebook: "",
-        //     whatsapp: "https://walink.co/d2a179",
-        //     gps: "https://maps.app.goo.gl/dxYMyXo9KLSuAmtt5",
-        //     latitud: "-17.9629399",
-        //     longitud: "-67.1043014",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 3,
-        //     nombre: "SANTIDAD DIVINA II (PARQUE DE LA UNION)",
-        //     direccion: "Rodriguez Nº 526 entre 6 de Octubre y La Paz",
-        //     telefono: "52 56598",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "8:00 am a 10:00 pm",
-        //     facebook: "https://www.facebook.com/farmaciasantidad.divinaii",
-        //     whatsapp: "https://walink.co/5f6010",
-        //     gps: "https://maps.app.goo.gl/CQ3YkRd7iB5P8U1m8",
-        //     latitud: "-17.9620611",
-        //     longitud: "-67.1114951",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 4,
-        //     nombre: "SANTIDAD DIVINA III (MERCADO YOUNG)",
-        //     direccion: "Av. España entre Dehene y Acha",
-        //     telefono: "52 60779",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "8:00 am a 11:00 pm",
-        //     facebook: "",
-        //     whatsapp: "https://walink.co/74d7f6",
-        //     gps: "https://maps.app.goo.gl/iNnJ8kCFZTEvEoxo7",
-        //     latitud: "-17.978669",
-        //     longitud: "-67.132325",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 5,
-        //     nombre: "SANTIDAD DIVINA IV (CASCO)",
-        //     direccion: "Av. Circunvalación Nº 15 entre Franz Tamayo y Benjamin Guzman",
-        //     telefono: "52 36001",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "08:00 am a 10:00 pm",
-        //     facebook: "",
-        //     whatsapp: "https://walink.co/14c7df",
-        //     gps: "https://maps.app.goo.gl/pvaxoxQqzC2qStYe6",
-        //     latitud: "-17.92701",
-        //     longitud: "-67.122287",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 6,
-        //     nombre: "FARMACIA POTOSI (MERCADO BOLIVAR)",
-        //     direccion: "Adolfo Mier Nº 445 entre Tejerina y Tarapaca",
-        //     telefono: "52 86468",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "07:30 am a 10:00 pm",
-        //     facebook: "https://www.facebook.com/farmacia.potosi.144",
-        //     whatsapp: "https://walink.co/b80053",
-        //     gps: "https://maps.app.goo.gl/QWZKKcSeFdnFfxcF8",
-        //     latitud: "-17.9720109",
-        //     longitud: "-67.1055173",
-        //     status: "ACTIVO"
-        //   },
-        //   {
-        //     id: 7,
-        //     nombre: "FARMACIA MABEL",
-        //     direccion: "San Felipe Nº 500 esq. Pisagua",
-        //     telefono: "52 89789",
-        //     atencion: "Lunes a Domingo / Feriados",
-        //     horario: "8:00 am a 11:00 pm",
-        //     facebook: "https://www.facebook.com/farmacia.mabel",
-        //     whatsapp: "https://walink.co/613688",
-        //     gps: "https://maps.app.goo.gl/1FakQToSJpCNtZTp6",
-        //     latitud: "-17.9771487",
-        //     longitud: "-67.1022885",
-        //     status: "ACTIVO"
-        //   }
-        // ]
         this.agencias = [
           {
             'id': 1,
@@ -327,13 +227,14 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         const SizedBox(width: 13),
                         GestureDetector(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const CarritoPage(),
                               ),
                             );
+                            setState(() {});
                           },
                           child: Badge(
                             label: Text( globals.carritoCompras.length.toString(), style: const TextStyle(color: Colors.white)),
@@ -521,33 +422,120 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        height: 50,
-                        width: 70,
-                        decoration: const BoxDecoration(
-                          color: Color(0xff2A977D),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(7),
-                            topLeft: Radius.circular(7),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              TextEditingController quantityController = TextEditingController(text: "1");
+
+                              return AlertDialog(
+                                title: const Text("Ingrese la cantidad"),
+                                content: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        int cantidad = int.tryParse(quantityController.text) ?? 1;
+                                        if (cantidad > 1) {
+                                          cantidad--;
+                                          quantityController.text = cantidad.toString();
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.redAccent,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(7),
+                                            bottomLeft: Radius.circular(7),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(Icons.remove, color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        controller: quantityController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: const InputDecoration(
+                                          labelText: "Cantidad",
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        int cantidad = int.tryParse(quantityController.text) ?? 1;
+                                        cantidad++;
+                                        quantityController.text = cantidad.toString();
+                                      },
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.greenAccent,
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(7),
+                                            bottomRight: Radius.circular(7),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(Icons.add, color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context); // Cerrar diálogo sin hacer nada
+                                    },
+                                    child: const Text("Cancelar"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      int cantidad = int.tryParse(quantityController.text) ?? 1; // Validar entrada
+
+                                      var product = {
+                                        'id': productDetails!['id'],
+                                        'nombre': productDetails!['nombre'],
+                                        'precio': productDetails!['precio'],
+                                        'imagen': productDetails!['imagen'],
+                                        'cantidad': cantidad,
+                                      };
+
+                                      globals.carritoCompras.add(product); // Agregar al carrito
+                                      Navigator.pop(context); // Cerrar diálogo
+                                      setState(() {}); // Actualizar UI
+
+                                      successSnackBar(context, 'Producto agregado al carrito de compras');
+                                    },
+                                    child: const Text("Agregar"),
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 70,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2A977D),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              topLeft: Radius.circular(7),
+                            ),
                           ),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            // https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+ARTINEO+B+X+CAPSULA+a+Bs.+13.14+c%2Fu.+Total+Bs.+13.14&type=phone_number&app_absent=0
-                            // var url = 'https://api.whatsapp.com/send/?phone=59172319869&text=Deseo+comprar+1+${productDetails!['nombre']}+a+Bs.${productDetails!['precio']}+c%2Fu.+Total+Bs.${productDetails!['precio']}';
-                            // launchUrl(url);
-                            // agregar a carritoCompras
-                            var product = {
-                              'id': productDetails!['id'],
-                              'nombre': productDetails!['nombre'],
-                              'precio': productDetails!['precio'],
-                              'imagen': productDetails!['imagen'],
-                              'cantidad': 1,
-                            };
-                            globals.carritoCompras.add(product);
-                            setState(() {});
-                            successSnackBar(context, 'Producto agregado al carrito de compras');
-                          },
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
