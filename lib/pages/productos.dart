@@ -141,20 +141,30 @@ class _ProductosState extends State<Productos> {
             ),
             const SizedBox(height: 10),
             CarouselSlider(
-              options: CarouselOptions(height: 50.0, autoPlay: true,
+              options: CarouselOptions(
+                height: 50.0,
+                autoPlay: true,
                 viewportFraction: 0.3,
                 aspectRatio: 2.0,
               ),
               items: imgListMini
                   .map(
                     (item) => Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      item,
-                      fit: BoxFit.cover,
-                      width: 100, // Ajustar el ancho según el diseño
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: ClipRect(
+                    child: Align(
+                      alignment: Alignment.center, // Puedes cambiar a topCenter, bottomCenter, etc.
+                      widthFactor: 1.0, // Ajusta el recorte en ancho
+                      heightFactor: 0.8, // Ajusta el recorte en altura (Ejemplo: 80% del total)
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          item,
+                          fit: BoxFit.cover,
+                          // width: 100, // Ajustar el ancho según el diseño
+                          // height: 50, // Puedes ajustar la altura para forzar el recorte
+                        ),
+                      ),
                     ),
                   ),
                 ),
