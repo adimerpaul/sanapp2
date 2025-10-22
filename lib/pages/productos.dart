@@ -20,6 +20,7 @@ class _ProductosState extends State<Productos> {
   final List<dynamic> productList = [];
   final TextEditingController searchController = TextEditingController();
   bool isLoading = false;
+  int _bannerIndex = 0;
 
   @override
   void initState() {
@@ -29,19 +30,24 @@ class _ProductosState extends State<Productos> {
   }
 
   Future<void> getCarouselsPage() async {
-    var carousels = await ApiService().getCarouselsPage();
-    var carouselsMini = await ApiService().getCarouselsMini();
-    var url = dotenv.env['API_BACK'];
+    final carousels = await ApiService().getCarouselsPage();
+    final carouselsMini = await ApiService().getCarouselsMini();
+    final url = dotenv.env['API_BACK'];
+
     imgListMini.clear();
-    for (var carousel in carouselsMini) {
-      // print(carousel);
-      imgListMini.add('$url/../images/${carousel['image']}');
+    for (final c in carouselsMini) {
+      imgListMini.add('$url/../images/${c['image']}');
     }
+
     imgList.clear();
-    for (var carousel in carousels) {
-      imgList.add('$url/../images/${carousel['image']}');
+    for (final c in carousels) {
+      imgList.add('$url/../images/${c['image']}');
     }
-    setState(() {});
+
+    // 🔐 importante: evita que _bannerIndex apunte a un índice fuera de rango
+    setState(() {
+      _bannerIndex = (imgList.isEmpty) ? 0 : (_bannerIndex % imgList.length);
+    });
   }
 
   Future<void> fetchProducts({String searchQuery = ''}) async {
@@ -140,47 +146,86 @@ class _ProductosState extends State<Productos> {
               ),
             ),
             const SizedBox(height: 10),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 50.0,
-                autoPlay: true,
-                viewportFraction: 0.3,
-                aspectRatio: 2.0,
-              ),
-              items: imgListMini
-                  .map(
-                    (item) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: ClipRect(
-                    child: Align(
-                      alignment: Alignment.center, // Puedes cambiar a topCenter, bottomCenter, etc.
-                      widthFactor: 1.0, // Ajusta el recorte en ancho
-                      heightFactor: 0.8, // Ajusta el recorte en altura (Ejemplo: 80% del total)
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          item,
-                          fit: BoxFit.cover,
-                          // width: 100, // Ajustar el ancho según el diseño
-                          // height: 50, // Puedes ajustar la altura para forzar el recorte
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                height: 160,
+                child: imgList.isEmpty
+                // 🧱 Placeholder mientras carga (evita RangeError)
+                    ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                )
+                    : Stack(
+                  children: [
+                    CarouselSlider.builder(
+                      itemCount: imgList.length,
+                      options: CarouselOptions(
+                        height: 160,
+                        viewportFraction: 1.0,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 4),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 700),
+                        enlargeCenterPage: false,
+                        onPageChanged: (index, reason) {
+                          setState(() => _bannerIndex = index);
+                        },
+                      ),
+                      itemBuilder: (context, index, realIdx) {
+                        final item = imgList[index]; // ✅ seguro porque no entra si está vacío
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x1F000000),
+                                blurRadius: 10,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              item,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (c, w, p) =>
+                              p == null ? w : const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                              errorBuilder: (_, __, ___) => const ColoredBox(color: Colors.black12),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // Indicador solo si hay elementos
+                    if (imgList.length > 0)
+                      Positioned(
+                        right: 12,
+                        top: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.45),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '${_bannerIndex + 1}/${imgList.length}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                  ],
                 ),
-              )
-                  .toList(),
-            ),
-            const SizedBox(height: 10),
-            CarouselSlider(
-              options: CarouselOptions(height: 90.0, autoPlay: true),
-              items: imgList
-                  .map((item) => Container(
-                child: Center(
-                  child: Image.network(item, fit: BoxFit.cover, width: 1000),
-                ),
-              ))
-                  .toList(),
+              ),
             ),
             const SizedBox(height: 20),
             Padding(
